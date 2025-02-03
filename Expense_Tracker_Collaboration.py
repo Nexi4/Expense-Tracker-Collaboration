@@ -28,10 +28,23 @@ def add_expense():
 
             expense_listings[expense_category].append({
                 'Amount spent': expense_amount,
-                'Time of spending': expense_time
+                'Time of expense': expense_time
             })
 
         print(f"Expense added:\n {expense_category}: Spent ${expense_amount} on {expense_time}")
+add_expense()
+
+def view_expense():
+    if not expense_listings:
+        print("No expenses yet.")
+        return
+    
+    for expense_category, expenses in expense_listings.items():
+        print(f"\nCategory: {expense_category}")
+        for expense in expenses:
+            print(f" Amount: ${expense['Amount spent']}\n Time: {expense['Time of expense']}")
+view_expense()
+
 def total_expense():
     pass
 
@@ -42,7 +55,7 @@ while on:
         if choice == '1':
             add_expense()
         elif choice == '2':
-            pass
+            view_expense()
         elif choice == '3':
             total_expense()
         elif choice == '4':

@@ -30,3 +30,36 @@ def add_expense():
     print(f"Expense added:\n {expense_category}: Spent ${expense_amount} on {expense_time}")
 
 add_expense()
+#--------------------------------------------------------------------------------
+def filter_expenses(category=None, date=None, min_amount=None, max_amount=None):
+    filtered = []
+    
+    for expense_category, expenses in expense_listings.items():
+        if category and category != expense_category:
+            continue
+        
+        for expense in expenses:
+            if date and expense["Time of spending"] != date:
+                continue
+            if min_amount and expense["Amount spent"] < min_amount:
+                continue
+            if max_amount and expense["Amount spent"] > max_amount:
+                continue
+            
+            filtered.append({"category": expense_category, **expense})
+    
+    return filtered
+
+def delete_expense(category, index):
+    if category not in expense_listings:
+        print(f"Category '{category}' not found.")
+        return False
+
+    if index < 0 or index >= len(expense_listings[category]):
+        print(f"Invalid index: {index}. No expense deleted.")
+        return False
+
+    deleted_expense = expense_listings[category].pop(index)
+    print(f"Deleted expense: {deleted_expense}")
+    return True
+#-----------------------------------------------------------------------

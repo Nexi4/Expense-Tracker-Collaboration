@@ -2,6 +2,7 @@
 expense_listings = {}
 from datetime import datetime
 on = True
+categories = ["Food", "Clothing", "Utility", "Entertainment", "Transport", "Healthcare", "Insurance", "Housing", "Internet", "Other"]
 def main_menu():
     global on
     while on:
@@ -25,7 +26,6 @@ def total_expense():
             total += expense["Amount spent"]
     print(f"Your total expenses is: ${total:.2f}")
 def add_expense():
-    categories = ["Food", "Clothing", "Utility", "Entertainment", "Transport", "Healthcare", "Insurance", "Housing", "Internet", "Other"]
     while True:
         expense_category = input(f"Add what kind of expense?\n Choose from {categories} ").capitalize()
         if expense_category not in categories:
@@ -77,39 +77,36 @@ def view_expense():
             print(f" Amount: ${expense['Amount spent']}\n Time: {expense['Time of expense']}\n")
             print("---------------------------")
  
-def delete_expense():
-    if not expense_listings:
-        print("No expenses to delete.")
-        return
 
-    print("\nDelete expenses by:")
-    print("1) Category")
-    print("2) Specific Date (within a category)")
+def filter_expenses(category=None, date=None, min_amount=None, max_amount=None):
+    filtered = []
     
-    choice = input("Choose an option: ")
-    
-    if choice == '1':
-        category = input("Enter the category to delete: ").capitalize()
-        if category in expense_listings:
-            del expense_listings[category]
-            print(f"All expenses in category '{category}' have been deleted.")
-        else:
-            print("Category not found.")
-
-    elif choice == '2':
-        category = input("Enter the category: ").capitalize()
-        if category not in expense_listings:
-            print("Category not found.")
-            return
+    for expense_category, expenses in expense_listings.items():
+        if category and category != expense_category:
+            continue
         
-        date_attempt = input("Enter the date to delete expenses (YYYY-MM-DD): ")
-        try:
-            expense_date = datetime.strptime(date_attempt, "%Y-%m-%d").date()
-        except ValueError:
-            print("Invalid date format.")
-            return
+        for expense in expenses:
+            if date and expense["Time of spending"] != date:
+                continue
+            if min_amount and expense["Amount spent"] < min_amount:
+                continue
+            if max_amount and expense["Amount spent"] > max_amount:
+                continue
+            
+            filtered.append({"category": expense_category, **expense})
+    
+    return filtered
 
-        expense_listings[category] = [expense for expense in expense_listings[category] if expense["Time of spending"] != expense_date]
+def delete_expense(category, index):
+    if category not in expense_listings:
+        print(f"Category '{category}' not found.")
+        return False
 
-        print(f"Deleted expenses on {expense_date} from category '{category}'.")
+    if index < 0 or index >= len(expense_listings[category]):
+        print(f"Invalid index: {index}. No expense deleted.")
+        return False
+
+    deleted_expense = expense_listings[category].pop(index)
+    print(f"Deleted expense: {deleted_expense}")
+    return True
 main_menu()

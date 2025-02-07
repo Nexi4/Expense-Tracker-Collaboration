@@ -18,7 +18,12 @@ def main_menu():
             delete_expense()
         elif choice == '6':
             on = False
-
+def total_expense():
+    total = 0
+    for expenses in expense_listings.values():
+        for expense in expenses:
+            total += expense["Amount spent"]
+    print(f"Your total expenses is: ${total:.2f}")
 def add_expense():
     categories = ["Food", "Clothing", "Utility", "Entertainment", "Transport", "Healthcare", "Insurance", "Housing", "Internet", "Other"]
     while True:
@@ -26,6 +31,11 @@ def add_expense():
         if expense_category not in categories:
             print("Not in the category list, choose again.")
             continue
+        elif expense_category == "Other":
+            new_category = input("What category do you want to add?: ").capitalize()
+            categories.append(new_category)
+            expense_category = new_category
+            break
         else:
             break
 
@@ -42,14 +52,14 @@ def add_expense():
                 expense_time = datetime.strptime(date_attempt, "%Y-%m-%d").date()
                 break
             except ValueError:
-                print("Enter a valid time in given format.")
+                print("Enter time in given format.")
 
     if expense_category not in expense_listings:
         expense_listings[expense_category] = []
 
-        expense_listings[expense_category].append({
-            'Amount spent': expense_amount,
-            'Time of spending': expense_time
+    expense_listings[expense_category].append({
+        'Amount spent': expense_amount,
+        'Time of expense': expense_time
         })
 
     print(f"Expense added:\n {expense_category}: Spent ${expense_amount} on {expense_time}")
@@ -67,8 +77,6 @@ def view_expense():
             print(f" Amount: ${expense['Amount spent']}\n Time: {expense['Time of expense']}\n")
             print("---------------------------")
  
-def total_expense():
-    pass
 
 def filter_expenses(category=None, date=None, min_amount=None, max_amount=None):
     filtered = []

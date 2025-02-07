@@ -31,9 +31,9 @@ def add_expense():
         if expense_category not in categories:
             print("Not in the category list, choose again.")
             continue
-        elif expense_category == "other":
+        elif expense_category == "Other":
             new_category = input("What category do you want to add?: ")
-            new_category = expense_category
+            expense_categories.append(new_category)
         else:
             break
 
@@ -57,7 +57,7 @@ def add_expense():
 
     expense_listings[expense_category].append({
         'Amount spent': expense_amount,
-        'Time of spending': expense_time
+        'Time of expense': expense_time
         })
 
     print(f"Expense added:\n {expense_category}: Spent ${expense_amount} on {expense_time}")

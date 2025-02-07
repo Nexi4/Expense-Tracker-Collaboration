@@ -1,10 +1,11 @@
+# Empty dictionary
 expense_listings = {}
 from datetime import datetime
 on = True
 def main_menu():
     global on
     while on:
-        choice = input("Choose one of the options: \n1) Add Expense\n2) View Expense\n3) Total Expense\n4) Delete Expense\n5) Exit\n")
+        choice = input("Choose one of the options: \n1) Add Expense\n2) View Expense\n3) Total Expense\n4) Filter Expens\n5) Delete Expense\n6) Exit\n")
         if choice == '1':
             add_expense()
         elif choice == '2':
@@ -12,32 +13,30 @@ def main_menu():
         elif choice == '3':
             total_expense()
         elif choice == '4':
-            pass
+            filter_expense()
         elif choice == '5':
+            delete_expense()
+        elif choice == '6':
             on = False
 
 def add_expense():
-        categories = ["Food", "Clothing", "Utility", "Entertainment", "Transport", "Healthcare", "Insurance", "Housing", "Internet", "Other\n"]
-        while True:
-            expense_category = input(f"Add what kind of expense?\n Choose from {categories} ").capitalize()
-            if expense_category not in categories:
-                print("Not in the category list, choose again.")
-                continue
-            elif expense_category == "Other":
-                specified_category = input("What category do you want to add?: ").capitalize()
-                categories.append(specified_category)
-                expense_category = specified_category
-                break
-            else:
-                break
+    categories = ["Food", "Clothing", "Utility", "Entertainment", "Transport", "Healthcare", "Insurance", "Housing", "Internet", "Other"]
+    while True:
+        expense_category = input(f"Add what kind of expense?\n Choose from {categories} ").capitalize()
+        if expense_category not in categories:
+            print("Not in the category list, choose again.")
+            continue
+        else:
+            break
 
+    while True:
         try:
             expense_amount = float(input("How much? "))
+            break
         except ValueError:
             print("Not a number, try again.")
-            return
 
-        while True:
+    while True:
             date_attempt = input("When was the expense(YYYY-MM-DD)?: ")
             try:
                 expense_time = datetime.strptime(date_attempt, "%Y-%m-%d").date()
@@ -45,16 +44,15 @@ def add_expense():
             except ValueError:
                 print("Enter time in given format.")
 
-        
-        if expense_category not in expense_listings:
-            expense_listings[expense_category] = []
+    if expense_category not in expense_listings:
+        expense_listings[expense_category] = []
 
-            expense_listings[expense_category].append({
-                'Amount spent': expense_amount,
-                'Time of expense': expense_time
-            })
+        expense_listings[expense_category].append({
+            'Amount spent': expense_amount,
+            'Time of spending': expense_time
+        })
 
-        print(f"Expense added:\n {expense_category}: Spent ${expense_amount} on {expense_time}\n")
+    print(f"Expense added:\n {expense_category}: Spent ${expense_amount} on {expense_time}")
 
 def view_expense():
     if not expense_listings:
@@ -72,4 +70,35 @@ def view_expense():
 def total_expense():
     pass
 
+def filter_expenses(category=None, date=None, min_amount=None, max_amount=None):
+    filtered = []
+    
+    for expense_category, expenses in expense_listings.items():
+        if category and category != expense_category:
+            continue
+        
+        for expense in expenses:
+            if date and expense["Time of spending"] != date:
+                continue
+            if min_amount and expense["Amount spent"] < min_amount:
+                continue
+            if max_amount and expense["Amount spent"] > max_amount:
+                continue
+            
+            filtered.append({"category": expense_category, **expense})
+    
+    return filtered
+
+def delete_expense(category, index):
+    if category not in expense_listings:
+        print(f"Category '{category}' not found.")
+        return False
+
+    if index < 0 or index >= len(expense_listings[category]):
+        print(f"Invalid index: {index}. No expense deleted.")
+        return False
+
+    deleted_expense = expense_listings[category].pop(index)
+    print(f"Deleted expense: {deleted_expense}")
+    return True
 main_menu()

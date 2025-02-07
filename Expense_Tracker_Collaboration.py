@@ -42,7 +42,7 @@ def add_expense():
                 expense_time = datetime.strptime(date_attempt, "%Y-%m-%d").date()
                 break
             except ValueError:
-                print("Enter time in given format.")
+                print("Enter a valid time in given format.")
 
     if expense_category not in expense_listings:
         expense_listings[expense_category] = []

@@ -71,10 +71,10 @@ def view_expense():
         return
     print("---------Expenses----------")
     for expense_category, expenses in expense_listings.items():
-        print(f"Category: {expense_category}")
+        print(f"\nCategory: {expense_category}")
         for expense in expenses:
             
-            print(f" Amount: ${expense['Amount spent']}\n Time: {expense['Time of expense']}")
+            print(f" Amount: ${expense['Amount spent']}\n Time: {expense['Time of expense']}\n")
         print("--------------------------")
 def delete_expense():
     if not expense_listings:

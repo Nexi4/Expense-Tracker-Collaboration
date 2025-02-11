@@ -1,8 +1,8 @@
 # Empty dictionary
 expense_listings = {}
-from datetime import datetime
-on = True
-categories = ["Food", "Clothing", "Utility", "Entertainment", "Transport", "Healthcare", "Insurance", "Housing", "Internet", "Other"]
+from datetime import datetime # For YYYY-MM-DD checks
+on = True # for the 'while on' function
+categories = ["Food", "Clothing", "Utility", "Entertainment", "Transport", "Healthcare", "Insurance", "Housing", "Internet", "Other"] # Set up catagories for adding expenses
 def main_menu():
     global on
     while on:
@@ -24,14 +24,19 @@ def total_expense():
             total += expense["Amount spent"]
     print(f"Your total expenses is: ${total:.2f}")
 def add_expense():
-    while True:
+    # Loops to maintain functionality in case of Error
+    while True: 
         expense_category = input(f"Add what kind of expense?\n Choose from {categories} ").capitalize()
         if expense_category not in categories:
             print("Not in the category list, choose again.")
-            continue
+            # Resets back to catagory selection
+            continue 
+        #In case user chooses 'Other'
         elif expense_category == "Other":
             new_category = input("What category do you want to add?: ").capitalize()
+            # Shoves added catagory into the list
             categories.append(new_category)
+            # Just so that the code work without complications
             expense_category = new_category
             break
         else:
@@ -39,6 +44,7 @@ def add_expense():
 
     while True:
         try:
+            # float just for decimals
             expense_amount = float(input("How much? "))
             break
         except ValueError:
@@ -46,12 +52,14 @@ def add_expense():
 
     while True:
             date_attempt = input("When was the expense(YYYY-MM-DD)?: ")
+            # Ensures that the user input follows the YYYY-MM-DD
             try:
                 expense_time = datetime.strptime(date_attempt, "%Y-%m-%d").date()
                 break
             except ValueError:
                 print("Enter time in given format.")
 
+    # Shoves new catagory into list, if not, just add date, time, and amount into the respective catagory
     if expense_category not in expense_listings:
         expense_listings[expense_category] = []
 
@@ -59,14 +67,16 @@ def add_expense():
         'Amount spent': expense_amount,
         'Time of expense': expense_time
         })
-
+    # Say that expense is added
     print(f"Expense added:\n {expense_category}: Spent ${expense_amount} on {expense_time}")
 
 def view_expense():
+    # Check for any current expenses
     if not expense_listings:
         print("No expenses yet.")
         return
     
+    # Organized viewing of expenses
     print("---------Expenses----------")
     for expense_category, expenses in expense_listings.items():
         print(f"\nCategory: {expense_category}")

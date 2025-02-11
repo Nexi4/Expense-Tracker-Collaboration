@@ -3,7 +3,6 @@ expense_listings = {}
 from datetime import datetime
 on = True
 categories = ["Food", "Clothing", "Utility", "Entertainment", "Transport", "Healthcare", "Insurance", "Housing", "Internet", "Other"]
-
 def main_menu():
     global on
     while on:
@@ -18,14 +17,12 @@ def main_menu():
             delete_expense()
         elif choice == '5':
             on = False
-
 def total_expense():
     total = 0
     for expenses in expense_listings.values():
         for expense in expenses:
             total += expense["Amount spent"]
     print(f"Your total expenses is: ${total:.2f}")
-
 def add_expense():
     while True:
         expense_category = input(f"Add what kind of expense?\n Choose from {categories} ").capitalize()
@@ -69,13 +66,16 @@ def view_expense():
     if not expense_listings:
         print("No expenses yet.")
         return
+    
     print("---------Expenses----------")
     for expense_category, expenses in expense_listings.items():
         print(f"\nCategory: {expense_category}")
         for expense in expenses:
-            
             print(f" Amount: ${expense['Amount spent']}\n Time: {expense['Time of expense']}\n")
-        print("--------------------------")
+    
+    print("---------------------------")
+ 
+
 def delete_expense():
     if not expense_listings:
         print("No expenses to delete.")
@@ -108,7 +108,7 @@ def delete_expense():
             print("Invalid date format.")
             return
 
-        expense_listings[category] = [expense for expense in expense_listings[category] if expense["Time of spending"] != expense_date]
+        expense_listings[category] = [expense for expense in expense_listings[category] if expense["Time of expense"] != expense_date]
 
         print(f"Deleted expenses on {expense_date} from category '{category}'.")
 main_menu()

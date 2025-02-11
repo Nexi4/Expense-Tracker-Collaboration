@@ -3,10 +3,11 @@ expense_listings = {}
 from datetime import datetime
 on = True
 categories = ["Food", "Clothing", "Utility", "Entertainment", "Transport", "Healthcare", "Insurance", "Housing", "Internet", "Other"]
+
 def main_menu():
     global on
     while on:
-        choice = input("Choose one of the options: \n1) Add Expense\n2) View Expense\n3) Total Expense\n4) Filter Expens\n5) Delete Expense\n6) Exit\n")
+        choice = input("Choose one of the options: \n1) Add Expense\n2) View Expense\n3) Total Expense\n4) Delete Expense\n5) Exit\n")
         if choice == '1':
             add_expense()
         elif choice == '2':
@@ -14,17 +15,17 @@ def main_menu():
         elif choice == '3':
             total_expense()
         elif choice == '4':
-            filter_expense()
-        elif choice == '5':
             delete_expense()
-        elif choice == '6':
+        elif choice == '5':
             on = False
+
 def total_expense():
     total = 0
     for expenses in expense_listings.values():
         for expense in expenses:
             total += expense["Amount spent"]
     print(f"Your total expenses is: ${total:.2f}")
+
 def add_expense():
     while True:
         expense_category = input(f"Add what kind of expense?\n Choose from {categories} ").capitalize()
@@ -68,16 +69,13 @@ def view_expense():
     if not expense_listings:
         print("No expenses yet.")
         return
-    
+    print("---------Expenses----------")
     for expense_category, expenses in expense_listings.items():
-        print("---------Expenses----------")
-        print(f"\nCategory: {expense_category}")
+        print(f"Category: {expense_category}")
         for expense in expenses:
             
-            print(f" Amount: ${expense['Amount spent']}\n Time: {expense['Time of expense']}\n")
-            print("---------------------------")
- 
-
+            print(f" Amount: ${expense['Amount spent']}\n Time: {expense['Time of expense']}")
+        print("--------------------------")
 def delete_expense():
     if not expense_listings:
         print("No expenses to delete.")

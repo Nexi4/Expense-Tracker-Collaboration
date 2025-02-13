@@ -18,11 +18,11 @@ def main_menu():
         elif choice == '5':
             on = False
 def total_expense():
-    total = 0
-    for expenses in expense_listings.values():
+    total = 0 
+    for expenses in expense_listings.values(): # list through the dictiionary values and add them up
         for expense in expenses:
             total += expense["Amount spent"]
-    print(f"Your total expenses is: ${total:.2f}")
+    print(f"Your total expenses is: ${total:.2f}") # print the result out
 def add_expense():
     # Loops to maintain functionality in case of Error
     while True: 
@@ -87,31 +87,31 @@ def view_expense():
  
 
 def delete_expense():
-    if not expense_listings:
+    if not expense_listings: # check the dictionary if there is anything to delete
         print("No expenses to delete.")
         return
 
-    print("\nDelete expenses by:")
+    print("\nDelete expenses by:") 
     print("1) Category")
     print("2) Specific Date (within a category)")
     
     choice = input("Choose an option: ")
     
     if choice == '1':
-        category = input("Enter the category to delete: ").capitalize()
+        category = input("Enter the category to delete: ").capitalize() # let user input what category to delete and delete it from the dictionary
         if category in expense_listings:
             del expense_listings[category]
             print(f"All expenses in category '{category}' have been deleted.")
-        else:
+        else: # in case the user type in incorrectly or the category does not exist
             print("Category not found.")
 
     elif choice == '2':
-        category = input("Enter the category: ").capitalize()
+        category = input("Enter the category: ").capitalize() # in case the user type in incorrectly or the category does not exist
         if category not in expense_listings:
             print("Category not found.")
             return
         
-        date_attempt = input("Enter the date to delete expenses (YYYY-MM-DD): ")
+        date_attempt = input("Enter the date to delete expenses (YYYY-MM-DD): ") # let user enter the date in a YYYY-MM-DD format for comparison with the values in the dictionary to delete the value
         try:
             expense_date = datetime.strptime(date_attempt, "%Y-%m-%d").date()
         except ValueError:
@@ -119,6 +119,6 @@ def delete_expense():
             return
 
         expense_listings[category] = [expense for expense in expense_listings[category] if expense["Time of expense"] != expense_date]
-
+        # delete the expense of that date
         print(f"Deleted expenses on {expense_date} from category '{category}'.")
 main_menu()

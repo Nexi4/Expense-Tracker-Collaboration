@@ -16,7 +16,7 @@ Mac:
 Planning has been a problem here since we didn't communicate enough; some of us were still coding with the old version, and we had to move things back and forth between versions a couple of times.
 
 Yifan:
-
+I think the challenge is ensuring that my code runs compatibly with my teammates' code. I need to continuously fix my code based on error messages.
 
 Did we like collaborative coding?
 
